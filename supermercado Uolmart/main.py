@@ -63,13 +63,31 @@ def registrar_producto():
 def registrar_cliente():
     print("Registrar Nuevo Cliente")
     nombre = input("Ingrese el nombre del cliente: ")
-    correo_electronico = input("Ingrese el correo electrónico del cliente: ")
-    nit = input("Ingrese el NIT del cliente: ")
+
+    while True:
+        correo_electronico = input("Ingrese el correo electrónico del cliente: ")
+        correo_existente = any(cliente.correo_electronico == correo_electronico for cliente in clientes_registrados)
+        if not correo_existente:
+            break
+        else:
+            print("Error: Este correo electrónico ya está registrado.")
+            continue  # Continuar solicitando el correo electrónico
+
+    while True:
+        nit = input("Ingrese el NIT del cliente: ")
+        nit_existente = any(cliente.nit == nit for cliente in clientes_registrados)
+        if not nit_existente:
+            break
+        else:
+            print("Error: Este NIT ya está registrado.")
+            continue  # Continuar solicitando el NIT
 
     nuevo_cliente = Cliente(nombre, correo_electronico, nit)
     clientes_registrados.append(nuevo_cliente)
 
     print("Cliente registrado exitosamente.")
+
+
 
 def realizar_compra():
     print("Realizar Compra")
