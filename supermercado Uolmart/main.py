@@ -83,9 +83,6 @@ def registrar_producto():
 
     print("Producto registrado exitosamente.")
 
-
-
-
 def registrar_cliente():
     print("Registrar Nuevo Cliente")
     nombre = input("Ingrese el nombre del cliente: ")
@@ -204,11 +201,6 @@ def reporte_compra():
         print("Impuestos por el 12%: Q {:.2f}".format(impuesto))
         print("Total con Impuestos: Q {:.2f}".format(total_con_impuestos))
         print("------------------------------------------")
-
-
-
-
-
 
 def datos_estudiante():
     print("Datos del Estudiante")
