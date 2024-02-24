@@ -30,10 +30,18 @@ class Compra:
         return costo_total, impuesto
 
 # Lista para almacenar los productos registrados
-productos_registrados = []
+productos_registrados = [
+  
+    Producto("01", "Leche", "Leche entera", 5.0),
+    Producto("02", "Pan", "Pan blanco", 2.5),
+    Producto("03", "Huevos", "Huevos frescos", 3.0),
+    Producto("04", "Arroz", "Arroz blanco", 4.0)
+]
 
 # Lista para almacenar los clientes registrados
-clientes_registrados = []
+clientes_registrados = [
+    Cliente("Angel", "angel@gmail.com", "01")
+]
 
 # Lista para almacenar las compras realizadas
 compras_realizadas = []
@@ -115,6 +123,9 @@ def realizar_compra():
         opcion_compra = input("Seleccione una opción: ")
 
         if opcion_compra == "1":
+            print("Lista de Productos Disponibles:")
+            for producto in productos_registrados:
+                print("Código: {}, Nombre: {}, Descripción: {}, Precio: {}".format(producto.codigo, producto.nombre, producto.descripcion, producto.precio_unitario))
             codigo_producto = input("Ingrese el código del producto: ")
             producto_encontrado = None
             for producto in productos_registrados:
@@ -128,36 +139,52 @@ def realizar_compra():
                 print("Error: No se encontró ningún producto con ese código.")
         elif opcion_compra == "2":
             compras_realizadas.append(nueva_compra)
-            print("Compra realizada y facturada exitosamente.")
+            print("Compra con ID {} realizada y facturada exitosamente.".format(id_compra))
             break
         else:
             print("Opción no válida. Por favor, seleccione una opción válida.")
 
+
 def reporte_compra():
-    print("Generar Reporte de Compra")
-    id_compra = input("Ingrese el ID de la compra: ")
+    while True:
+        print("Generar Reporte de Compra")
+        id_compra = input("Ingrese el ID de la compra: ")
 
-    compra_encontrada = None
-    for compra in compras_realizadas:
-        if compra.id_compra == id_compra:
-            compra_encontrada = compra
+        # Convertir el ID de la compra ingresado por el usuario a un entero
+        id_compra = int(id_compra)
+
+        compra_encontrada = None
+        for compra in compras_realizadas:
+            if compra.id_compra == id_compra:
+                compra_encontrada = compra
+                break
+
+        if compra_encontrada is None:
+            print("Error: No se encontró ninguna compra con ese ID.")
+        else:
+            print("------------- REPORTE DE COMPRA {} -------------".format(id_compra))
+            print("CLIENTE:")
+            print("Nombre: {}".format(compra_encontrada.cliente.nombre))
+            print("Correo electrónico: {}".format(compra_encontrada.cliente.correo_electronico))
+            print("NIT: {}".format(compra_encontrada.cliente.nit))
+            print("ARTÍCULOS COMPRADOS:")
+            for i, producto in enumerate(compra_encontrada.lista_productos, start=1):
+                print("# Producto {}: {} - {} - Q{}".format(i, producto.codigo, producto.nombre, producto.precio_unitario))
+            costo_total, impuesto = compra_encontrada.generar_factura()
+            total_con_impuestos = costo_total + impuesto
+            print("Total: Q {:.2f}".format(costo_total))
+            print("Impuestos: Q {:.2f}".format(impuesto))
+            print("Total con Impuestos: Q {:.2f}".format(total_con_impuestos))
+            print("------------------------------------------")
+
+        opcion = input("¿Desea continuar? (s/n): ")
+        if opcion.lower() == 'n':
+            print("Programa terminado.")
             break
+        elif opcion.lower() != 's':
+            print("Opción no válida. Por favor, seleccione 's' para continuar o 'n' para salir.")
 
-    if compra_encontrada is None:
-        print("Error: No se encontró ninguna compra con ese ID.")
-    else:
-        print("------------- REPORTE DE COMPRA {} -------------".format(id_compra))
-        print("CLIENTE:")
-        print("Nombre: {}".format(compra_encontrada.cliente.nombre))
-        print("Correo electrónico: {}".format(compra_encontrada.cliente.correo_electronico))
-        print("NIT: {}".format(compra_encontrada.cliente.nit))
-        print("ARTÍCULOS COMPRADOS:")
-        for i, producto in enumerate(compra_encontrada.lista_productos, start=1):
-            print("# Producto {}: {} - {} - Q{}".format(i, producto.codigo, producto.nombre, producto.precio_unitario))
-        costo_total, impuesto = compra_encontrada.generar_factura()
-        print("Total: Q {:.2f}".format(costo_total))
-        print("Impuestos: Q {:.2f}".format(impuesto))
-        print("------------------------------------------")
+
 
 def datos_estudiante():
     print("Datos del Estudiante")
